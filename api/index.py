@@ -5,6 +5,8 @@ import re
 
 try:
     import stanza
+    import os
+    os.environ["STANZA_RESOURCES_DIR"] = os.path.join(os.path.dirname(__file__), "stanza_resources")
 except ImportError:
     stanza = None
 
