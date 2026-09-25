@@ -1,6 +1,5 @@
     # pyrefly: ignore [missing-import]
-
-    from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify
     import re
 
     try:
