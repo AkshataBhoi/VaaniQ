@@ -145,7 +145,8 @@ def get_nlp_pipeline(lang_code):
             lang=lang_code,
             processors='tokenize,mwt,pos,lemma,depparse',
             use_gpu=False,
-            verbose=False
+            verbose=False,
+            download_method=None
         )
 
         NLP_PIPELINES[lang_code] = nlp
