@@ -45,26 +45,26 @@ function AiVoiceOrb({ state }: { state: AppState }) {
       <div className="relative flex items-center justify-center">
         <div
           className={`absolute rounded-full transition-all duration-700 ${isInteracting
-              ? 'w-28 h-28 bg-indigo-500/30 blur-xl animate-ping'
-              : 'w-20 h-20 bg-indigo-500/10 blur-md'
+            ? 'w-28 h-28 bg-indigo-500/30 blur-xl animate-ping'
+            : 'w-20 h-20 bg-indigo-500/10 blur-md'
             }`}
         />
         <div
           className={`absolute rounded-full transition-all duration-500 ${isInteracting
-              ? 'w-24 h-24 bg-purple-500/40 blur-lg animate-pulse'
-              : 'w-16 h-16 bg-purple-500/10 blur-sm'
+            ? 'w-24 h-24 bg-purple-500/40 blur-lg animate-pulse'
+            : 'w-16 h-16 bg-purple-500/10 blur-sm'
             }`}
         />
         <div
           className={`relative rounded-full bg-gradient-to-tr transition-all duration-500 shadow-2xl flex items-center justify-center ${state === 'listening'
-              ? 'w-20 h-20 from-indigo-500 via-purple-500 to-pink-500 shadow-indigo-500/50 scale-110'
-              : state === 'speaking'
-                ? 'w-20 h-20 from-cyan-400 via-indigo-500 to-purple-600 shadow-cyan-500/50 scale-110 animate-pulse'
-                : state === 'processing'
-                  ? 'w-16 h-16 from-amber-400 to-orange-500 shadow-amber-500/30 rotate-180 animate-spin'
-                  : state === 'error'
-                    ? 'w-16 h-16 from-red-600 via-rose-500 to-red-800 shadow-red-500/30'
-                    : 'w-16 h-16 from-indigo-600/80 via-purple-600/80 to-zinc-800 shadow-indigo-500/20'
+            ? 'w-20 h-20 from-indigo-500 via-purple-500 to-pink-500 shadow-indigo-500/50 scale-110'
+            : state === 'speaking'
+              ? 'w-20 h-20 from-cyan-400 via-indigo-500 to-purple-600 shadow-cyan-500/50 scale-110 animate-pulse'
+              : state === 'processing'
+                ? 'w-16 h-16 from-amber-400 to-orange-500 shadow-amber-500/30 rotate-180 animate-spin'
+                : state === 'error'
+                  ? 'w-16 h-16 from-red-600 via-rose-500 to-red-800 shadow-red-500/30'
+                  : 'w-16 h-16 from-indigo-600/80 via-purple-600/80 to-zinc-800 shadow-indigo-500/20'
             }`}
         >
           <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md border border-white/30 animate-pulse" />
@@ -204,39 +204,39 @@ export default function App() {
     synthRef.current.speak(utterance)
   }
 
-    async function handleAnalyze() {
-      if (!inputText.trim()) return
+  async function handleAnalyze() {
+    if (!inputText.trim()) return
 
-      setAppState('processing')
-      setErrorMessage('')
+    setAppState('processing')
+    setErrorMessage('')
 
-      try {
-        const apiBase = import.meta.env.VITE_API_URL ?? ''
-        const res = await fetch(`${apiBase}/api/analyze`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ text: inputText })
-        })
+    try {
+      const apiBase = import.meta.env.VITE_API_URL ?? ''
+      const res = await fetch(`${apiBase}/api/analyze`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: inputText })
+      })
 
-        const data = await res.json()
-        if (!res.ok) throw new Error(data.error || 'Failed to analyze')
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Failed to analyze')
 
-        setAnalysis(data)
-        setAppState('complete')
+      setAnalysis(data)
+      setAppState('complete')
 
-        const newEntry: HistoryItem = {
-          id: Date.now().toString(),
-          timestamp: new Date().toLocaleString(),
-          inputText: inputText,
-          detectedLanguage: data.language.name,
-          tokens: data.tokens
-        }
-        saveHistory([newEntry, ...history])
-      } catch (e: any) {
-        setErrorMessage(e.message)
-        setAppState('error')
+      const newEntry: HistoryItem = {
+        id: Date.now().toString(),
+        timestamp: new Date().toLocaleString(),
+        inputText: inputText,
+        detectedLanguage: data.language.name,
+        tokens: data.tokens
       }
+      saveHistory([newEntry, ...history])
+    } catch (e: any) {
+      setErrorMessage(e.message)
+      setAppState('error')
     }
+  }
 
   function clearText() {
     setInputText('')
@@ -318,8 +318,8 @@ export default function App() {
               <button
                 onClick={handleMicClick}
                 className={`relative group w-20 h-20 rounded-full flex items-center justify-center transition-all duration-500 active:scale-95 ${appState === 'listening'
-                    ? 'bg-rose-600 text-white shadow-2xl shadow-rose-600/50 ring-4 ring-rose-500/30 animate-pulse'
-                    : 'bg-gradient-to-tr from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-2xl shadow-indigo-600/40 hover:scale-105 ring-1 ring-white/20'
+                  ? 'bg-rose-600 text-white shadow-2xl shadow-rose-600/50 ring-4 ring-rose-500/30 animate-pulse'
+                  : 'bg-gradient-to-tr from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-2xl shadow-indigo-600/40 hover:scale-105 ring-1 ring-white/20'
                   }`}
               >
                 <MicIcon className="w-8 h-8" />
