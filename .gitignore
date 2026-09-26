@@ -20,3 +20,7 @@ logs/
 /.plugins/
 /.opencode-skills/
 /.venv
+__pycache__/
+*.pyc
+.venv/
+.env
