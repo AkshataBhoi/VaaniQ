@@ -204,38 +204,39 @@ export default function App() {
     synthRef.current.speak(utterance)
   }
 
-  async function handleAnalyze() {
-    if (!inputText.trim()) return
+    async function handleAnalyze() {
+      if (!inputText.trim()) return
 
-    setAppState('processing')
-    setErrorMessage('')
+      setAppState('processing')
+      setErrorMessage('')
 
-    try {
-      const res = await fetch('/api/analyze', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: inputText })
-      })
+      try {
+        const apiBase = import.meta.env.VITE_API_URL ?? ''
+        const res = await fetch(`${apiBase}/api/analyze`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text: inputText })
+        })
 
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'Failed to analyze')
+        const data = await res.json()
+        if (!res.ok) throw new Error(data.error || 'Failed to analyze')
 
-      setAnalysis(data)
-      setAppState('complete')
+        setAnalysis(data)
+        setAppState('complete')
 
-      const newEntry: HistoryItem = {
-        id: Date.now().toString(),
-        timestamp: new Date().toLocaleString(),
-        inputText: inputText,
-        detectedLanguage: data.language.name,
-        tokens: data.tokens
+        const newEntry: HistoryItem = {
+          id: Date.now().toString(),
+          timestamp: new Date().toLocaleString(),
+          inputText: inputText,
+          detectedLanguage: data.language.name,
+          tokens: data.tokens
+        }
+        saveHistory([newEntry, ...history])
+      } catch (e: any) {
+        setErrorMessage(e.message)
+        setAppState('error')
       }
-      saveHistory([newEntry, ...history])
-    } catch (e: any) {
-      setErrorMessage(e.message)
-      setAppState('error')
     }
-  }
 
   function clearText() {
     setInputText('')

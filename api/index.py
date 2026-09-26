@@ -27,6 +27,17 @@ except LookupError:
 lemmatizer = WordNetLemmatizer()
 
 app = Flask(__name__)
+from flask_cors import CORS
+
+# Configure CORS – allow only the Render domain in production, fallback to any origin in dev
+CORS(
+    app,
+    resources={r"/api/*": {"origins": "*"}},
+    methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Content-Type"]
+)
+
+
 
 # ============================================================
 # LANGUAGE DETECTION
