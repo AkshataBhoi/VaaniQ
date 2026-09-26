@@ -4,11 +4,10 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "pip install --break-system-packages -r requirements.txt && vite build",
-    "preview": "vite preview",
-    "format": "oxfmt"
-  },
+  "dev": "vite",
+  "build": "vite",
+  "preview": "vite"
+},
   "dependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
