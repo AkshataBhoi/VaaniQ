@@ -44,31 +44,28 @@ function AiVoiceOrb({ state }: { state: AppState }) {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-900/10 via-transparent to-transparent pointer-events-none" />
       <div className="relative flex items-center justify-center">
         <div
-          className={`absolute rounded-full transition-all duration-700 ${
-            isInteracting
+          className={`absolute rounded-full transition-all duration-700 ${isInteracting
               ? 'w-28 h-28 bg-indigo-500/30 blur-xl animate-ping'
               : 'w-20 h-20 bg-indigo-500/10 blur-md'
-          }`}
+            }`}
         />
         <div
-          className={`absolute rounded-full transition-all duration-500 ${
-            isInteracting
+          className={`absolute rounded-full transition-all duration-500 ${isInteracting
               ? 'w-24 h-24 bg-purple-500/40 blur-lg animate-pulse'
               : 'w-16 h-16 bg-purple-500/10 blur-sm'
-          }`}
+            }`}
         />
         <div
-          className={`relative rounded-full bg-gradient-to-tr transition-all duration-500 shadow-2xl flex items-center justify-center ${
-            state === 'listening'
+          className={`relative rounded-full bg-gradient-to-tr transition-all duration-500 shadow-2xl flex items-center justify-center ${state === 'listening'
               ? 'w-20 h-20 from-indigo-500 via-purple-500 to-pink-500 shadow-indigo-500/50 scale-110'
               : state === 'speaking'
-              ? 'w-20 h-20 from-cyan-400 via-indigo-500 to-purple-600 shadow-cyan-500/50 scale-110 animate-pulse'
-              : state === 'processing'
-              ? 'w-16 h-16 from-amber-400 to-orange-500 shadow-amber-500/30 rotate-180 animate-spin'
-              : state === 'error'
-              ? 'w-16 h-16 from-red-600 via-rose-500 to-red-800 shadow-red-500/30'
-              : 'w-16 h-16 from-indigo-600/80 via-purple-600/80 to-zinc-800 shadow-indigo-500/20'
-          }`}
+                ? 'w-20 h-20 from-cyan-400 via-indigo-500 to-purple-600 shadow-cyan-500/50 scale-110 animate-pulse'
+                : state === 'processing'
+                  ? 'w-16 h-16 from-amber-400 to-orange-500 shadow-amber-500/30 rotate-180 animate-spin'
+                  : state === 'error'
+                    ? 'w-16 h-16 from-red-600 via-rose-500 to-red-800 shadow-red-500/30'
+                    : 'w-16 h-16 from-indigo-600/80 via-purple-600/80 to-zinc-800 shadow-indigo-500/20'
+            }`}
         >
           <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md border border-white/30 animate-pulse" />
         </div>
@@ -118,7 +115,7 @@ export default function App() {
   const [history, setHistory] = useState<HistoryItem[]>([])
   const [showHistory, setShowHistory] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
-  
+
   const recognitionRef = useRef<any>(null)
   const synthRef = useRef<SpeechSynthesis | null>(null)
 
@@ -127,9 +124,9 @@ export default function App() {
     if (saved) {
       try {
         setHistory(JSON.parse(saved))
-      } catch (e) {}
+      } catch (e) { }
     }
-    
+
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       synthRef.current = window.speechSynthesis
     }
@@ -155,15 +152,15 @@ export default function App() {
 
     const SpeechRecognition = (window as any).webkitSpeechRecognition
     const recognition = new SpeechRecognition()
-    
+
     recognition.continuous = false
     recognition.interimResults = true
-    
+
     recognition.onstart = () => {
       setAppState('listening')
       setErrorMessage('')
     }
-    
+
     recognition.onresult = (event: any) => {
       const transcript = Array.from(event.results)
         .map((result: any) => result[0])
@@ -171,16 +168,16 @@ export default function App() {
         .join('')
       setInputText(transcript)
     }
-    
+
     recognition.onerror = (event: any) => {
       setErrorMessage(`Error: ${event.error}`)
       setAppState('error')
     }
-    
+
     recognition.onend = () => {
       setAppState('idle')
     }
-    
+
     recognitionRef.current = recognition
     recognition.start()
   }
@@ -203,29 +200,29 @@ export default function App() {
     utterance.onstart = () => setAppState('speaking')
     utterance.onend = () => setAppState('idle')
     utterance.onerror = () => setAppState('idle')
-    
+
     synthRef.current.speak(utterance)
   }
 
   async function handleAnalyze() {
     if (!inputText.trim()) return
-    
+
     setAppState('processing')
     setErrorMessage('')
-    
+
     try {
       const res = await fetch('/api/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text: inputText })
       })
-      
+
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Failed to analyze')
-      
+
       setAnalysis(data)
       setAppState('complete')
-      
+
       const newEntry: HistoryItem = {
         id: Date.now().toString(),
         timestamp: new Date().toLocaleString(),
@@ -260,7 +257,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#0a0c10] text-zinc-100 font-sans selection:bg-indigo-500 selection:text-white relative overflow-x-hidden antialiased">
-      
+
       {/* BACKGROUND TEXTURE */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f29370d_1px,transparent_1px),linear-gradient(to_bottom,#1f29370d_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
@@ -284,7 +281,7 @@ export default function App() {
               </span>
             </div>
           </div>
-          
+
           <button
             onClick={() => setShowHistory(prev => !prev)}
             className="px-4 py-2 rounded-xl text-xs font-semibold tracking-wide border transition-all duration-300 bg-zinc-900/80 text-zinc-400 border-zinc-800 hover:text-zinc-200"
@@ -295,7 +292,7 @@ export default function App() {
       </header>
 
       <main className="max-w-6xl mx-auto px-6 pt-8 pb-24 relative z-10 space-y-8">
-        
+
         <div className="text-center mb-10 mt-4">
           <h1 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400 mb-4 tracking-tight">
             Real-time NLP Analysis Engine
@@ -319,11 +316,10 @@ export default function App() {
             <div className="mt-6 flex flex-col items-center">
               <button
                 onClick={handleMicClick}
-                className={`relative group w-20 h-20 rounded-full flex items-center justify-center transition-all duration-500 active:scale-95 ${
-                  appState === 'listening'
+                className={`relative group w-20 h-20 rounded-full flex items-center justify-center transition-all duration-500 active:scale-95 ${appState === 'listening'
                     ? 'bg-rose-600 text-white shadow-2xl shadow-rose-600/50 ring-4 ring-rose-500/30 animate-pulse'
                     : 'bg-gradient-to-tr from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-2xl shadow-indigo-600/40 hover:scale-105 ring-1 ring-white/20'
-                }`}
+                  }`}
               >
                 <MicIcon className="w-8 h-8" />
               </button>
@@ -363,7 +359,7 @@ export default function App() {
                   {appState === 'speaking' ? 'Stop TTS' : 'Speak this'}
                 </button>
               </div>
-              
+
               <button
                 onClick={handleAnalyze}
                 disabled={!inputText.trim() || appState === 'processing'}
@@ -423,9 +419,9 @@ export default function App() {
                         {node.pos}
                       </span>
                     </div>
-                    
+
                     <div className="text-xl font-bold text-white my-1">{node.text}</div>
-                    
+
                     <div className="space-y-1 mt-3 pt-3 border-t border-zinc-800/80 text-xs">
                       <div className="flex justify-between">
                         <span className="text-zinc-400">Lemma:</span>
@@ -452,13 +448,13 @@ export default function App() {
               <h3 className="text-xs font-mono uppercase tracking-widest text-zinc-400">Analysis History</h3>
               <button onClick={() => saveHistory([])} className="text-xs text-rose-400 hover:text-rose-300 transition-colors">Clear All</button>
             </div>
-            
+
             {history.length === 0 ? (
               <div className="text-center py-8 text-zinc-500 text-sm">No history yet.</div>
             ) : (
               <div className="grid gap-3">
                 {history.map(item => (
-                  <div 
+                  <div
                     key={item.id}
                     className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800 hover:border-zinc-700 cursor-pointer flex justify-between items-center transition-all"
                   >
@@ -472,14 +468,14 @@ export default function App() {
                         <span>{item.timestamp}</span>
                       </div>
                     </div>
-                    <button 
+                    <button
                       onClick={(e) => {
                         e.stopPropagation();
                         saveHistory(history.filter(h => h.id !== item.id))
                       }}
                       className="p-2 text-zinc-600 hover:text-rose-400 transition-colors"
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                     </button>
                   </div>
                 ))}

@@ -11,7 +11,7 @@
     "api/**/*.py": {
       "memory": 1024,
       "maxDuration": 60,
-      "includeFiles": "stanza_resources/**",
+  
       "excludeFiles": "{node_modules/**,**/node_modules/**,**/nvidia/**,**/triton/**,**/torch/test/**,**/torch/include/**,**/*.pyc,**/__pycache__/**,**/test/**,**/tests/**,**/torch/lib/libtorch_cuda*,**/torch/lib/libnv*,**/torch/lib/libcu*,**/torch/lib/libcurand*}"
     }
   }
