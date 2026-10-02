@@ -296,7 +296,7 @@ export default function App() {
 
         <div className="text-center mb-10 mt-4">
           <h1 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400 mb-4 tracking-tight">
-            Real-time NLP Analysis Engine
+            How Vaani Understands
           </h1>
           <p className="text-zinc-400 text-lg max-w-2xl mx-auto font-light">
             Speak or type to instantly analyze syntactic and morphological structures in multiple Indian languages.
@@ -310,7 +310,7 @@ export default function App() {
         )}
 
         {/* STT & TEXT AREA */}
-        <div className="grid md:grid-cols-[300px_1fr] gap-6">
+        <div className="grid md:grid-cols-[300px_2fr] gap-6">
           {/* LEFT: MIC PANEL */}
           <div className="bg-zinc-900/50 border border-zinc-700/60 rounded-3xl backdrop-blur-3xl shadow-2xl p-6 flex flex-col items-center justify-center min-h-[300px]">
             <AiVoiceOrb state={appState} />

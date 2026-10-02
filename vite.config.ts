@@ -93,9 +93,9 @@ function figmaSiteConfiguration(config: FigmaSiteConfiguration): Plugin {
     return html.replace(`<!-- ${slotName} -->`, content)
   }
 
-  const title = config.title ?? "Figma Make App"
+  const title = config.title ?? "VaaniQ"
   const description = config.description ?? ''
-  const favicon = config.icons?.icon ?? ''
+  const favicon = config.icons?.icon ?? 'https://chatgpt.com/backend-api/estuary/content?id=file_0000000083c88243bd59ceffee014605&ts=497477&p=fs&cid=1&sig=c67e130e3cb49322c81d9636698d427dbb89c92759d04bdddf4f651fafaf4be1&v=0'
   const socialImage = config.openGraph?.image ?? ''
   const language = sanitizeHtmlValue(config.language) || 'en'
   const googleAnalyticsId = sanitizeHtmlValue(config.analytics?.googleAnalyticsId)
